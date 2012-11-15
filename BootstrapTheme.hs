@@ -19,7 +19,7 @@ pageTemplate =
     <html>
      <head>
       <title><% getPageTitle %></title>
-      <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+      <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css"        rel="stylesheet" media="screen" />
       <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-responsive.css" rel="stylesheet" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
      </head>
