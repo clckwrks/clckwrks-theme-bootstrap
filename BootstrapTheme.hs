@@ -14,22 +14,25 @@ theme = Theme
     , _themeTemplate = pageTemplate
     }
 
-pageTemplate :: XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
-pageTemplate =
+pageTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
+                , EmbedAsChild (ClckT ClckURL (ServerPartT IO)) body
+                ) =>
+                Text
+             -> headers
+             -> body
+             -> XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
+pageTemplate ttl hdr bdy =
     <html>
      <head>
-      <title><% getPageTitle %></title>
+      <title><% ttl %></title>
       <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css"        rel="stylesheet" media="screen" />
       <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-responsive.css" rel="stylesheet" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <% hdr %>
+      <% googleAnalytics %>
      </head>
      <body>
-      <div class="container">
-       <div class="row">
-        <h1><% getPageTitle %></h1>
-        <% getPageContent %>
-       </div>
-      </div>
+      <% bdy %>
       <script src="http://code.jquery.com/jquery-latest.js"></script>
      </body>
     </html>
