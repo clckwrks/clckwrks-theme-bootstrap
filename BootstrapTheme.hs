@@ -1,4 +1,4 @@
-{-# LANGUAGE FlexibleContexts, OverloadedStrings #-}
+{-# LANGUAGE FlexibleContexts, OverloadedStrings, RecordWildCards #-}
 {-# OPTIONS_GHC -F -pgmFtrhsx #-}
 module BootstrapTheme where
 
@@ -13,6 +13,7 @@ theme :: Theme
 theme = Theme
     { themeName      = "bootstrap-theme"
     , _themeTemplate = pageTemplate
+    , themeBlog      = blog
     , themeDataDir   = getDataDir
     }
 
@@ -39,3 +40,30 @@ pageTemplate ttl hdr bdy =
       <script src="http://code.jquery.com/jquery-latest.js"></script>
      </body>
     </html>
+
+postsHTML :: XMLGenT (Clck ClckURL) XML
+postsHTML =
+    do posts <- getPosts
+       <ol class="blog-posts">
+        <% mapM postHTML posts %>
+        </ol>
+
+postHTML :: Page -> XMLGenT (Clck ClckURL) XML
+postHTML Page{..} =
+    <li class="blog-post">
+     <h2><% pageTitle %></h2>
+     <span class="pub-date"><% pageDate %></span>
+     <% pageSrc %>
+     <p><a href=(ViewPage pageId)>permalink</a></p>
+    </li>
+
+blog :: XMLGenT (Clck ClckURL) XML
+blog =
+    do ttl <- lift getBlogTitle
+       pageTemplate ttl () $
+           <%>
+            <div id="blog-content">
+             <h1 class="page-title"><% ttl %></h1>
+             <% postsHTML %>
+            </div>
+           </%>
