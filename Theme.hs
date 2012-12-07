@@ -5,7 +5,6 @@ module Theme where
 import Clckwrks
 import Clckwrks.Monad
 import Data.Text (Text)
-import Happstack.Server
 import HSP
 import Paths_clckwrks_theme_bootstrap (getDataDir)
 

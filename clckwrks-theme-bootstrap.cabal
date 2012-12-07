@@ -1,5 +1,5 @@
 name:                clckwrks-theme-bootstrap
-version:             0.2.0
+version:             0.2.1
 synopsis:            simple bootstrap based template for clckwrks
 homepage:            http://www.clckwrks.com/
 license:             BSD3
@@ -18,6 +18,5 @@ library
                        Paths_clckwrks_theme_bootstrap
   build-depends:       base             >  4 && <5,
                        clckwrks         == 0.13.*,
-                       happstack-server == 7.0.*,
                        hsp              == 0.7.*,
                        text             == 0.11.*
