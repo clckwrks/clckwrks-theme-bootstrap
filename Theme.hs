@@ -1,6 +1,6 @@
 {-# LANGUAGE FlexibleContexts, OverloadedStrings, RecordWildCards #-}
 {-# OPTIONS_GHC -F -pgmFtrhsx #-}
-module BootstrapTheme where
+module Theme where
 
 import Clckwrks
 import Clckwrks.Monad
