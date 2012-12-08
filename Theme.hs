@@ -35,6 +35,7 @@ pageTemplate ttl hdr bdy =
       <% googleAnalytics %>
      </head>
      <body>
+      <h1><% ttl %></h1>
       <% bdy %>
       <script src="http://code.jquery.com/jquery-latest.js"></script>
      </body>
