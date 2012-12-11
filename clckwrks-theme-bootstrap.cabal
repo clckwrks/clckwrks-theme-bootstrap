@@ -13,6 +13,11 @@ cabal-version:       >=1.8
 data-files:
   data/style.css
 
+source-repository head
+    type:     darcs
+    subdir:   clckwrks-theme-bootstrap
+    location: http://hub.darcs.net/stepcut/clckwrks
+
 library
   exposed-modules:     Theme
                        Paths_clckwrks_theme_bootstrap
