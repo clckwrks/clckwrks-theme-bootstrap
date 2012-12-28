@@ -29,6 +29,7 @@ pageTemplate ttl hdr bdy =
       <title><% ttl %></title>
       <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css"        rel="stylesheet" media="screen" />
       <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-responsive.css" rel="stylesheet" />
+      <script src="http://code.jquery.com/jquery-latest.js"></script>
       <link rel="stylesheet" type="text/css" href=(ThemeData "style.css") />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <% hdr %>
@@ -37,7 +38,6 @@ pageTemplate ttl hdr bdy =
      <body>
       <h1><% ttl %></h1>
       <% bdy %>
-      <script src="http://code.jquery.com/jquery-latest.js"></script>
      </body>
     </html>
 
