@@ -33,7 +33,7 @@ pageTemplate ttl hdr bdy =
       <link rel="stylesheet" type="text/css" href=(ThemeData "style.css") />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <% hdr %>
-      <% googleAnalytics %>
+--      <% googleAnalytics %>
      </head>
      <body>
       <h1><% ttl %></h1>
@@ -41,6 +41,8 @@ pageTemplate ttl hdr bdy =
      </body>
     </html>
 
+blog = undefined
+{-
 postsHTML :: XMLGenT (Clck ClckURL) XML
 postsHTML =
     do posts <- getPosts
@@ -67,3 +69,4 @@ blog =
              <% postsHTML %>
             </div>
            </%>
+-}
