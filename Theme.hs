@@ -12,7 +12,7 @@ theme :: Theme
 theme = Theme
     { themeName      = "bootstrap-theme"
     , _themeTemplate = pageTemplate
-    , themeBlog      = blog
+--     , themeBlog      = blog
     , themeDataDir   = getDataDir
     }
 
@@ -41,10 +41,10 @@ pageTemplate ttl hdr bdy =
      </body>
     </html>
 
+{-
 blog :: XMLGenT (Clck ClckURL) XML
 blog = undefined
 
-{-
 postsHTML :: XMLGenT (Clck ClckURL) XML
 postsHTML =
     do posts <- getPosts
