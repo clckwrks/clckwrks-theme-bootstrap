@@ -3,6 +3,7 @@
 module Theme where
 
 import Clckwrks
+import Clckwrks.Menu.API
 import Clckwrks.Monad
 import Data.Text (Text)
 import HSP
@@ -36,8 +37,19 @@ pageTemplate ttl hdr bdy =
 --      <% googleAnalytics %>
      </head>
      <body>
-      <h1><% ttl %></h1>
-      <% bdy %>
+      <div class="container-fluid">
+       <% getMenu %>
+       <div class="row-fluid">
+        <div class="span12">
+         <h1><% ttl %></h1>
+        </div>
+       </div>
+       <div class="row-fluid">
+        <div class="span12">
+         <% bdy %>
+        </div>
+       </div>
+      </div>
      </body>
     </html>
 
