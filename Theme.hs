@@ -3,7 +3,7 @@
 module Theme where
 
 import Clckwrks
-import Clckwrks.Menu.API
+import Clckwrks.NavBar.API
 import Clckwrks.Monad
 import Data.Text (Text)
 import HSP
@@ -38,7 +38,7 @@ pageTemplate ttl hdr bdy =
      </head>
      <body>
       <div class="container-fluid">
-       <% getMenu %>
+       <% getNavBar %>
        <div class="row-fluid">
         <div class="span12">
          <h1><% ttl %></h1>
