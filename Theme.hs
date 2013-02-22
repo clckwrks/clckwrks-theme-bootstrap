@@ -3,9 +3,11 @@
 module Theme where
 
 import Clckwrks
-import Clckwrks.NavBar.API
+import Clckwrks.Types        (NamedLink(..))
+import Clckwrks.NavBar.API   (getNavBarData)
+import Clckwrks.NavBar.Types (NavBar(..), NavBarItem(..))
 import Clckwrks.Monad
-import Data.Text (Text)
+import Data.Text             (Text)
 import HSP
 import Paths_clckwrks_theme_bootstrap (getDataDir)
 
@@ -13,9 +15,32 @@ theme :: Theme
 theme = Theme
     { themeName      = "bootstrap-theme"
     , _themeTemplate = pageTemplate
---     , themeBlog      = blog
     , themeDataDir   = getDataDir
     }
+
+genNavBar :: GenXML (Clck ClckURL)
+genNavBar =
+    do menu <- lift getNavBarData
+       navBarHTML menu
+
+navBarHTML :: NavBar -> GenXML (Clck ClckURL)
+navBarHTML (NavBar menuItems) =
+    <div class="navbar navbar-static-full-width">
+     <div class="navbar-inner">
+      <div class="container">
+       <a class="brand" href="/">clckwrks</a>
+       <div class="nav-collapse">
+        <ul class="nav">
+         <% mapM mkNavBarItem menuItems %>
+        </ul>
+       </div>
+      </div>
+     </div>
+    </div>
+
+mkNavBarItem :: NavBarItem -> GenXML (Clck ClckURL)
+mkNavBarItem (NBLink (NamedLink ttl lnk)) =
+    <li><a href=lnk><% ttl %></a></li>
 
 pageTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
                 , EmbedAsChild (ClckT ClckURL (ServerPartT IO)) body
@@ -28,59 +53,36 @@ pageTemplate ttl hdr bdy =
     <html>
      <head>
       <title><% ttl %></title>
-      <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css"        rel="stylesheet" media="screen" />
-      <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-responsive.css" rel="stylesheet" />
       <script src="http://code.jquery.com/jquery-latest.js"></script>
-      <link rel="stylesheet" type="text/css" href=(ThemeData "style.css") />
+      <link rel="stylesheet" type="text/css" media="screen" href=(ThemeData "css/bootstrap.css")  />
+      <link rel="stylesheet" type="text/css" href=(ThemeData "hscolour.css") />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <% hdr %>
---      <% googleAnalytics %>
+      <% googleAnalytics %>
      </head>
      <body>
-      <div class="container-fluid">
-       <% getNavBar %>
-       <div class="row-fluid">
-        <div class="span12">
-         <h1><% ttl %></h1>
-        </div>
+      <div id="wrap">
+       <% genNavBar %>
+       <div class="container">
+         <div class="row">
+          <div class="span8">
+           <h1><% ttl %></h1>
+          </div>
+         </div>
+         <div class="row">
+          <div class="span8">
+           <% bdy %>
+          </div>
+         </div>
        </div>
-       <div class="row-fluid">
-        <div class="span12">
-         <% bdy %>
-        </div>
-       </div>
+       <div id="push"></div>
       </div>
+
+      <footer id="footer" class="footer">
+       <div class="container">
+         <p class="muted">Powered by <a href="http://happstack.com/">Clckwrks</a> and <a href="http://happstack.com/">Happstack</a>.</p>
+       </div>
+      </footer>
      </body>
+
     </html>
-
-{-
-blog :: XMLGenT (Clck ClckURL) XML
-blog = undefined
-
-postsHTML :: XMLGenT (Clck ClckURL) XML
-postsHTML =
-    do posts <- getPosts
-       <ol class="blog-posts">
-        <% mapM postHTML posts %>
-        </ol>
-
-postHTML :: Page -> XMLGenT (Clck ClckURL) XML
-postHTML Page{..} =
-    <li class="blog-post">
-     <h2><% pageTitle %></h2>
-     <span class="pub-date"><% pageDate %></span>
-     <% pageSrc %>
-     <p><a href=(ViewPage pageId)>permalink</a></p>
-    </li>
-
-blog :: XMLGenT (Clck ClckURL) XML
-blog =
-    do ttl <- lift getBlogTitle
-       pageTemplate ttl () $
-           <%>
-            <div id="blog-content">
-             <h1 class="page-title"><% ttl %></h1>
-             <% postsHTML %>
-            </div>
-           </%>
--}

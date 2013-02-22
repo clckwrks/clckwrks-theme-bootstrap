@@ -1,0 +1,81 @@
+// Swatch 2.2.2
+// Bootswatch
+// -----------------------------------------------------
+
+
+// TYPOGRAPHY
+// -----------------------------------------------------
+
+@import url('//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700');
+@import url(http://fonts.googleapis.com/css?family=Ubuntu+Mono);
+
+h1 { font-size: @baseFontSize * 2.25; } //
+h2 { font-size: @baseFontSize * 1.75; } //
+h3 { font-size: @baseFontSize * 1.50; } // ~24px
+h4 { font-size: @baseFontSize * 1.25; } // ~18px
+h5 { font-size: @baseFontSize; }
+h6 { font-size: @baseFontSize * 0.85; } // ~12px
+
+
+// SCAFFOLDING
+// -----------------------------------------------------
+
+// NAVBAR
+// -----------------------------------------------------
+
+// NAV
+// -----------------------------------------------------
+.navbar-static-full-width .container {
+  #grid > .core > .span(@gridColumns);
+}
+
+.navbar-static-full-width .navbar-inner {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+
+// BUTTONS
+// -----------------------------------------------------
+
+// TABLES
+// -----------------------------------------------------
+
+// FORMS
+// -----------------------------------------------------
+
+// DROPDOWNS
+// -----------------------------------------------------
+
+// ALERTS, LABELS, BADGES
+// -----------------------------------------------------
+
+// MISC
+// -----------------------------------------------------
+
+// MEDIA QUERIES
+// -----------------------------------------------------
+
+// FOOTER
+// -----------------------------------------------------
+
+html,
+body {
+    height: 100%;
+}
+
+#wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -60px;
+}
+#push,
+#footer {
+    height: 20px;
+    padding: 20px;
+}
+
+#footer {
+    background: @navbarBackground;
+}
