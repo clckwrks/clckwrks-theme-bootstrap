@@ -80,7 +80,7 @@ pageTemplate ttl hdr bdy =
 
       <footer id="footer" class="footer">
        <div class="container">
-         <p class="muted">Powered by <a href="http://happstack.com/">Clckwrks</a> and <a href="http://happstack.com/">Happstack</a>.</p>
+         <p class="muted">Powered by <a href="http://clckwrks.com/">Clckwrks</a> and <a href="http://happstack.com/">Happstack</a>.</p>
        </div>
       </footer>
      </body>
