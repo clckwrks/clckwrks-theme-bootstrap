@@ -66,11 +66,6 @@ pageTemplate ttl hdr bdy =
        <div class="container">
          <div class="row">
           <div class="span8">
-           <h1><% ttl %></h1>
-          </div>
-         </div>
-         <div class="row">
-          <div class="span8">
            <% bdy %>
           </div>
          </div>
