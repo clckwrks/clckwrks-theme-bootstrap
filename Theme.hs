@@ -15,9 +15,9 @@ import Paths_clckwrks_theme_bootstrap (getDataDir)
 
 theme :: Theme
 theme = Theme
-    { themeName      = "bootstrap-theme"
-    , _themeTemplate = pageTemplate
-    , themeDataDir   = getDataDir
+    { themeName    = "bootstrap-theme"
+    , themeStyles  = [defaultStyle]
+    , themeDataDir = getDataDir
     }
 
 genNavBar :: GenXML (Clck ClckURL)
@@ -44,14 +44,14 @@ mkNavBarItem :: NavBarItem -> GenXML (Clck ClckURL)
 mkNavBarItem (NBLink (NamedLink ttl lnk)) =
     <li><a href=lnk><% ttl %></a></li>
 
-pageTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
+defaultTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
                 , EmbedAsChild (ClckT ClckURL (ServerPartT IO)) body
                 ) =>
                 T.Text
              -> headers
              -> body
              -> XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
-pageTemplate ttl hdr bdy =
+defaultTemplate ttl hdr bdy =
     <html>
      <head>
       <title><% ttl %></title>
@@ -83,3 +83,11 @@ pageTemplate ttl hdr bdy =
      </body>
 
     </html>
+
+defaultStyle :: ThemeStyle
+defaultStyle = ThemeStyle
+    { themeStyleName        = "default"
+    , themeStyleDescription = "default view"
+    , themeStylePreview     = Nothing
+    , themeStyleTemplate    = defaultTemplate
+    }
