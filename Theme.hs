@@ -1,17 +1,24 @@
-{-# LANGUAGE FlexibleContexts, OverloadedStrings, RecordWildCards #-}
+{-# LANGUAGE FlexibleContexts, OverloadedStrings, RecordWildCards, QuasiQuotes #-}
 {-# OPTIONS_GHC -F -pgmFhsx2hs #-}
 module Theme where
 
 import Clckwrks
+import Clckwrks.Authenticate.Plugin  (authenticatePlugin)
+import Clckwrks.Authenticate.URL     (AuthURL(Auth))
 import Clckwrks.Types        (NamedLink(..))
 import Clckwrks.NavBar.API   (getNavBarData)
 import Clckwrks.NavBar.Types (NavBar(..), NavBarItem(..))
 import Clckwrks.Monad
+import Control.Monad.State        (get)
 import Data.Text.Lazy             (Text)
 import qualified Data.Text        as T
+import Happstack.Authenticate.Password.URL (PasswordURL(UsernamePasswordCtrl), passwordAuthenticationMethod)
+import HSP.JMacro
 import HSP.XMLGenerator
 import HSP.XML
+import Language.Javascript.JMacro
 import Paths_clckwrks_theme_bootstrap (getDataDir)
+import Web.Plugins.Core (pluginName, getPluginRouteFn)
 
 theme :: Theme
 theme = Theme
@@ -51,18 +58,25 @@ defaultTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
              -> headers
              -> body
              -> XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
-defaultTemplate ttl hdr bdy =
+defaultTemplate ttl hdr bdy = do
+    p <- plugins <$> get
+    (Just authShowURL) <- getPluginRouteFn p (pluginName authenticatePlugin)
+    let passwordShowURL u = authShowURL (Auth $ AuthenticationMethods $ Just (passwordAuthenticationMethod, toPathSegments u)) []
     <html>
      <head>
       <title><% ttl %></title>
       <script src="http://code.jquery.com/jquery-latest.js"></script>
       <link rel="stylesheet" type="text/css" media="screen" href=(ThemeData "data/css/bootstrap.css")  />
       <link rel="stylesheet" type="text/css" href=(ThemeData "data/css/hscolour.css") />
+      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.min.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular-route.min.js"></script>
+      <script src=(passwordShowURL UsernamePasswordCtrl)></script>
+      <script src=(JS ClckwrksApp)></script>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <% hdr %>
       <% googleAnalytics %>
      </head>
-     <body>
+     <body ng-app="clckwrksApp" ng-controller="AuthenticationCtrl">
       <div id="wrap">
        <% genNavBar %>
        <div class="container">
