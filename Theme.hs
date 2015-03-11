@@ -60,8 +60,7 @@ defaultTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
              -> XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
 defaultTemplate ttl hdr bdy = do
     p <- plugins <$> get
-    (Just authShowURL) <- getPluginRouteFn p (pluginName authenticatePlugin)
-    let passwordShowURL u = authShowURL (Auth $ AuthenticationMethods $ Just (passwordAuthenticationMethod, toPathSegments u)) []
+    (Just authRouteFn) <- getPluginRouteFn p (pluginName authenticatePlugin)
     <html>
      <head>
       <title><% ttl %></title>
@@ -70,8 +69,8 @@ defaultTemplate ttl hdr bdy = do
       <link rel="stylesheet" type="text/css" href=(ThemeData "data/css/hscolour.css") />
       <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.min.js"></script>
       <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular-route.min.js"></script>
-      <script src=(passwordShowURL UsernamePasswordCtrl)></script>
       <script src=(JS ClckwrksApp)></script>
+      <script src=(authRouteFn (Auth Controllers) [])></script>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <% hdr %>
       <% googleAnalytics %>
