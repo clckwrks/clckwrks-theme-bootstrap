@@ -1,25 +1,27 @@
 {-# LANGUAGE FlexibleContexts, OverloadedStrings, RecordWildCards, QuasiQuotes #-}
-{-# OPTIONS_GHC -F -pgmFhsx2hs #-}
 module Theme where
 
 import Clckwrks
-import Clckwrks.Authenticate.Plugin  (authenticatePlugin)
-import Clckwrks.Authenticate.URL     (AuthURL(Auth))
-import Clckwrks.Types        (NamedLink(..))
-import Clckwrks.NavBar.API   (getNavBarData)
-import Clckwrks.NavBar.Types (NavBar(..), NavBarItem(..))
+import Clckwrks.Authenticate.Plugin   (authenticatePlugin)
+import Clckwrks.Authenticate.URL      (AuthURL(Auth))
+import Clckwrks.Types                 (NamedLink(..))
+import Clckwrks.NavBar.API            (getNavBarData)
+import Clckwrks.NavBar.Types          (NavBar(..), NavBarItem(..))
 import Clckwrks.Monad
-import Control.Monad.State        (get)
-import Data.Text.Lazy             (Text)
-import qualified Data.Text        as T
+import Control.Monad.State            (get)
+import Data.Maybe                     (fromMaybe)
+import Data.Text.Lazy                 (Text)
+import qualified Data.Text            as T
 import Happstack.Authenticate.Password.URL (PasswordURL(UsernamePasswordCtrl), passwordAuthenticationMethod)
 import HSP.JMacro
 import HSP.XMLGenerator
 import HSP.XML
 import Language.Javascript.JMacro
+import Language.Haskell.HSX.QQ        (hsx)
 import Paths_clckwrks_theme_bootstrap (getDataDir)
-import Web.Plugins.Core (pluginName, getPluginRouteFn)
+import Web.Plugins.Core               (pluginName, getPluginRouteFn)
 
+-- | this `Theme`
 theme :: Theme
 theme = Theme
     { themeName    = "bootstrap-theme"
@@ -27,45 +29,81 @@ theme = Theme
     , themeDataDir = getDataDir
     }
 
+-- | function te generate the navigation bar
 genNavBar :: GenXML (Clck ClckURL)
 genNavBar =
-    do menu <- lift getNavBarData
-       navBarHTML menu
+    do menu  <- lift getNavBarData
+       mName <- query GetSiteName
+       navBarHTML (fromMaybe "clckwrks" mName) menu
 
-navBarHTML :: NavBar -> GenXML (Clck ClckURL)
-navBarHTML (NavBar menuItems) =
-    <div class="navbar navbar-static-full-width">
-     <div class="navbar-inner">
-      <div class="container">
-       <a class="brand" href="/">clckwrks</a>
-       <div class="nav-collapse">
-        <ul class="nav">
-         <% mapM mkNavBarItem menuItems %>
-        </ul>
-       </div>
-      </div>
-     </div>
+-- | helper function to generate a navigation bar from the navigation bar data
+navBarHTML :: T.Text   -- ^ brand
+           -> NavBar -- ^ navigation bar links
+           -> GenXML (Clck ClckURL)
+navBarHTML brand (NavBar menuItems) = [hsx|
+ <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    -- Brand and toggle get grouped for better mobile display
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#"><% brand %></a>
     </div>
+
+    -- Collect the nav links, forms, and other content for toggling
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-show="!isAuthenticated">
+      -- this is where actual menu things go
+      <ul class="nav navbar-nav">
+        <% mapM mkNavBarItem menuItems %>
+      </ul>
+
+      <span ng-controller="UsernamePasswordCtrl">
+       <up-login-inline />
+      </span>
+
+      -- navbar-text would make more sense than navbar-form, but it shifts the images funny. :-/
+      <span class="navbar-left navbar-btn" ng-controller="OpenIdCtrl" ng-show="!isAuthenticated">
+       <openid-google />
+      </span>
+      <span class="navbar-left navbar-btn" ng-controller="OpenIdCtrl" ng-show="!isAuthenticated">
+       <openid-yahoo />
+      </span>
+
+      <span up-authenticated=True class="navbar-left navbar-text">
+       <a ng-click="logout()" href="">Logout {{claims.user.username}}</a>
+      </span>
+    </div> -- /.navbar-collapse
+  </div>  -- /.container-fluid
+ </nav>
+    |]
 
 mkNavBarItem :: NavBarItem -> GenXML (Clck ClckURL)
 mkNavBarItem (NBLink (NamedLink ttl lnk)) =
-    <li><a href=lnk><% ttl %></a></li>
+    [hsx| <li><a href=lnk><% ttl %></a></li> |]
 
-defaultTemplate :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
-                , EmbedAsChild (ClckT ClckURL (ServerPartT IO)) body
-                ) =>
-                T.Text
-             -> headers
-             -> body
-             -> XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
+-- | default template for this theme
+defaultTemplate
+  :: ( EmbedAsChild (ClckT ClckURL (ServerPartT IO)) headers
+     , EmbedAsChild (ClckT ClckURL (ServerPartT IO)) body
+     ) =>
+     T.Text  -- ^ title to stick in \<title\> tag
+  -> headers -- ^ extra values to stick in \<head\> tag
+  -> body    -- ^ value to stick in \<body\> tag
+  -> XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
 defaultTemplate ttl hdr bdy = do
     p <- plugins <$> get
     (Just authRouteFn) <- getPluginRouteFn p (pluginName authenticatePlugin)
+    [hsx|
     <html>
      <head>
       <title><% ttl %></title>
       <script src="http://code.jquery.com/jquery-latest.js"></script>
-      <link rel="stylesheet" type="text/css" media="screen" href=(ThemeData "data/css/bootstrap.css")  />
+      <link rel="stylesheet" type="text/css" media="screen" href=(ThemeData "data/css/bootstrap.min.css")  />
+      <script src=(ThemeData "data/js/bootstrap.min.js")></script>
       <link rel="stylesheet" type="text/css" href=(ThemeData "data/css/hscolour.css") />
       <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.min.js"></script>
       <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular-route.min.js"></script>
@@ -94,9 +132,11 @@ defaultTemplate ttl hdr bdy = do
        </div>
       </footer>
      </body>
-
     </html>
+    |]
 
+
+-- | default `ThemeStyle` for this theme
 defaultStyle :: ThemeStyle
 defaultStyle = ThemeStyle
     { themeStyleName        = "default"
