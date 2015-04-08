@@ -100,6 +100,10 @@ defaultTemplate ttl hdr bdy = do
     [hsx|
     <html>
      <head>
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      -- the meta tags must come first
       <title><% ttl %></title>
       <script src="http://code.jquery.com/jquery-latest.js"></script>
       <link rel="stylesheet" type="text/css" media="screen" href=(ThemeData "data/css/bootstrap.min.css")  />
@@ -109,7 +113,6 @@ defaultTemplate ttl hdr bdy = do
       <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular-route.min.js"></script>
       <script src=(JS ClckwrksApp)></script>
       <script src=(authRouteFn (Auth Controllers) [])></script>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <% hdr %>
       <% googleAnalytics %>
      </head>
