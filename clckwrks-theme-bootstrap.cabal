@@ -9,6 +9,7 @@ maintainer:          jeremy@n-heptane.com
 category:            Clckwrks
 build-type:          Custom
 cabal-version:       >=1.8
+Tested-With:         GHC == 7.8.4, GHC == 7.10.2
 
 data-files:
 	data/js/npm.js
