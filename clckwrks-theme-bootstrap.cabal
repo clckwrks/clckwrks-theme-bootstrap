@@ -1,5 +1,5 @@
 name:                clckwrks-theme-bootstrap
-version:             0.4.1
+version:             0.4.2
 synopsis:            simple bootstrap based template for clckwrks
 description:         A simple bootstrap based theme for clckwrks.
 homepage:            http://www.clckwrks.com/
@@ -11,7 +11,7 @@ category:            Clckwrks
 build-type:          Custom
 cabal-version:       >=1.8
 extra-source-files:  README.md
-Tested-With:         GHC == 7.8.4, GHC == 7.10.2
+Tested-With:         GHC == 7.8.4, GHC == 7.10.2, GHC == 8.0.1
 
 data-files:
 	data/js/npm.js
