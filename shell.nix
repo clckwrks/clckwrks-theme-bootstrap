@@ -1,7 +1,7 @@
 with (import <nixpkgs> {}).pkgs;
-let pkg = haskellngPackages.callPackage
+let pkg = haskellPackages.callPackage
             ({ mkDerivation, base, clckwrks, happstack-authenticate, hsp
-             , hsx-jmacro, hsx2hs, jmacro, mtl, stdenv, text, web-plugins
+             , hsx-jmacro, hsx2hs, jmacro, mtl, stdenv, text, web-plugins, cabal-install
              }:
              mkDerivation {
                pname = "clckwrks-theme-bootstrap";
@@ -11,7 +11,7 @@ let pkg = haskellngPackages.callPackage
                  base clckwrks happstack-authenticate hsp hsx-jmacro hsx2hs jmacro
                  mtl text web-plugins
                ];
-               buildTools = [ hsx2hs ];
+               buildTools = [ cabal-install ];
                homepage = "http://www.clckwrks.com/";
                description = "simple bootstrap based template for clckwrks";
                license = stdenv.lib.licenses.bsd3;

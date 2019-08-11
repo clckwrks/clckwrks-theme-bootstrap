@@ -96,7 +96,7 @@ defaultTemplate
   -> XMLGenT (ClckT ClckURL (ServerPartT IO)) XML
 defaultTemplate ttl hdr bdy = do
     p <- plugins <$> get
-    (Just authRouteFn) <- getPluginRouteFn p (pluginName authenticatePlugin)
+    ~(Just authRouteFn) <- getPluginRouteFn p (pluginName authenticatePlugin)
     [hsx|
     <html>
      <head>
