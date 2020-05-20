@@ -1,7 +1,7 @@
 name:                clckwrks-theme-bootstrap
 version:             0.4.2.3
 synopsis:            simple bootstrap based template for clckwrks
-description:         A simple bootstrap based theme for clckwrks.
+description:         A simple bootstrap based theme for use with clckwrks.
 homepage:            http://www.clckwrks.com/
 license:             BSD3
 license-file:        LICENSE
