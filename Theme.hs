@@ -110,7 +110,7 @@ defaultTemplate ttl hdr bdy = do
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       -- the meta tags must come first
       <title><% ttl %></title>
-      <script src="http://code.jquery.com/jquery-latest.js"></script>
+      <script src="//code.jquery.com/jquery-latest.js"></script>
       <link rel="stylesheet" type="text/css" media="screen" href=(ThemeData "data/css/bootstrap.min.css")  />
       <script src=(ThemeData "data/js/bootstrap.min.js")></script>
       <link rel="stylesheet" type="text/css" href=(ThemeData "data/css/hscolour.css") />
