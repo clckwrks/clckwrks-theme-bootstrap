@@ -31,9 +31,8 @@ data-files:
         data/fonts/glyphicons-halflings-regular.woff2
 
 source-repository head
-    type:     darcs
-    subdir:   clckwrks-theme-bootstrap
-    location: http://hub.darcs.net/stepcut/clckwrks
+    type:     git
+    location: https://github.com/clckwrks/clckwrks-theme-bootstrap.git
 
 library
   default-language:    Haskell2010
