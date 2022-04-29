@@ -152,3 +152,5 @@ defaultStyle = ThemeStyle
     , themeStylePreview     = Nothing
     , themeStyleTemplate    = defaultTemplate
     }
+
+
